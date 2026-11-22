@@ -1,0 +1,53 @@
+<div class="shell">
+  <header class="topbar">
+    <div>
+      <span class="badge">Angular • Projeto 03</span>
+      <h1>FitPlan — Gestão de Treinos e Exercícios</h1>
+      <p>Organize sua ficha por grupamento muscular e acompanhe os exercícios concluídos.</p>
+    </div>
+    <div class="progress-pill">
+      Concluídos: <strong>{{ totalConcluidos }} / {{ exercicios.length }}</strong>
+    </div>
+  </header>
+
+  <section class="form-panel">
+    <h2>Novo Exercício</h2>
+    <form class="form-grid" (ngSubmit)="adicionarExercicio()">
+      <input
+        type="text"
+        name="nome"
+        [(ngModel)]="novoNome"
+        placeholder="Nome do exercício"
+        required
+      />
+      <select name="grupo" [(ngModel)]="novoGrupo">
+        <option *ngFor="let g of grupos.slice(1)" [value]="g">{{ g }}</option>
+      </select>
+      <input type="number" name="series" [(ngModel)]="novasSeries" min="1" placeholder="Séries" />
+      <input type="text" name="repeticoes" [(ngModel)]="novasRepeticoes" placeholder="Reps" />
+      <input type="number" name="carga" [(ngModel)]="novaCarga" min="0" placeholder="Carga (kg)" />
+      <button type="submit" class="btn-add">Adicionar</button>
+    </form>
+  </section>
+
+  <section class="filters">
+    <button
+      *ngFor="let g of grupos"
+      type="button"
+      class="chip"
+      [class.active]="grupoSelecionado === g"
+      (click)="grupoSelecionado = g"
+    >
+      {{ g }}
+    </button>
+  </section>
+
+  <main class="grid">
+    <app-exercise-card
+      *ngFor="let item of exerciciosFiltrados"
+      [exercicio]="item"
+      (alternar)="alternarConclusao($event)"
+      (remover)="removerExercicio($event)"
+    />
+  </main>
+</div>
